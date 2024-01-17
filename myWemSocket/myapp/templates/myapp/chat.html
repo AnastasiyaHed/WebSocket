@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+</head>
+<body>
+    <textarea id="chat" cols="100" rows="20" readonly></textarea><br>
+    <input type="text" id="message" autocomplete="off" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        var socket = new WebSocket("ws://" + window.location.host + "/ws/chat/some_room/");
+
+        socket.onmessage = function(event) {
+            var chat = document.getElementById("chat");
+            chat.value += event.data + "\n";
+        };
+
+        function sendMessage() {
+            var messageInput = document.getElementById("message");
+            var message = messageInput.value;
+
+            socket.send(message);
+
+            // Очистка поля ввода
+            messageInput.value = "";
+        }
+    </script>
+</body>
+</html>
